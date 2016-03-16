@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="wkf_becas_view" model="workflow">
+			<field name="name">becas.basic</field>
+			<field name="osv">process.becas</field>
+			<field name="on_create" eval='True' />
+		</record>
+
+
+		<!-- activity -->
+		<record id="act_draft" model="workflow.activity">
+			<field name="wkf_id" ref="wkf_becas_view" />
+			<field name="flow_start">True</field>
+			<field name="name">draft</field>
+		</record>
+		<record id="act_in_progress" model="workflow.activity">
+			<field name="wkf_id" ref="wkf_becas_view" />
+			<field name="kind">function</field>
+			<field name="action">in_progress()</field>
+			<field name="name">in_progress</field>
+		</record>
+
+        <record id="act_authorized" model="workflow.activity">
+			<field name="wkf_id" ref="wkf_becas_view" />
+			<field name="kind">function</field>
+			<field name="action">authorized()</field>
+			<field name="name">authorized</field>
+            <field name="flow_stop">True</field>
+		</record>
+
+		<record id="act_confirm_cancel" model="workflow.activity">
+			<field name="wkf_id" ref="wkf_becas_view" />
+			<field name="kind">function</field>
+			<field name="action">confirm_cancel()</field>
+			<field name="name">confirm_cancel</field>
+		</record>
+
+
+
+
+
+		<!-- transition -->
+
+       <record id="trans_draft_in_progress" model="workflow.transition">
+			<field name="act_from" ref="act_draft" />
+			<field name="act_to" ref="act_in_progress" />
+			<field name="signal">in_progress</field>
+		</record>
+
+       <record id="trans_draft_confirm_cancel" model="workflow.transition">
+			<field name="act_from" ref="act_draft" />
+			<field name="act_to" ref="act_confirm_cancel" />
+			<field name="signal">confirm_cancel</field>
+		</record>
+
+       <record id="trans_in_progress_confirm_cancel" model="workflow.transition">
+			<field name="act_from" ref="act_in_progress" />
+			<field name="act_to" ref="act_confirm_cancel" />
+			<field name="signal">confirm_cancel</field>
+		</record>
+
+        <record id="trans_in_progress_authorized" model="workflow.transition">
+			<field name="act_from" ref="act_in_progress" />
+			<field name="act_to" ref="act_authorized" />
+			<field name="signal">authorized</field>
+		</record>
+
+
+
+	</data>
+</openerp>

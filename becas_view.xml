@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record id="view_becas_tree" model="ir.ui.view">
+			<field name="name">process.becas.tree</field>
+			<field name="model">process.becas</field>
+			<field name="priority" eval="8" />
+			<field name="arch" type="xml">
+				<tree string="Becas">
+					<field name="date" />
+					<field name="student_id" />
+				</tree>
+			</field>
+		</record>
+		<record id="view_becas_form" model="ir.ui.view">
+			<field name="name">process.becas.form</field>
+			<field name="model">process.becas</field>
+			<field name="priority" eval="8" />
+			<field name="arch" type="xml">
+				<form string="Becas" version="7.0">
+                    <div>
+					<header>
+						<span groups="base.group_user">
+                            <field name="state" widget="statusbar" statusbar_visible="d,p,a,c"
+								statusbar_colors='{"d":"red"}' />
+
+                            <button name="in_progress" states="d,p,a,c" string="Pendiente de Autorizacion"
+								type="workflow" icon="gtk-copy" />
+
+                            <button name="authorized" states="d,p,a,c" string="Autorizar"
+								type="workflow" icon="gtk-apply" />
+
+                            <button name="confirm_cancel" states="d,p,a,c" string="Cancel"
+								type="workflow" icon="gtk-cancel" />
+                        </span>
+					</header>
+                    </div>
+                        <notebook colspan="2">
+                             <page string="Becas">
+                             <!-- .............. DETALLES DE ADMISION ...................... -->
+                                <group col="2">
+                                 <separator colspan="6" string="Becas"/>
+                                    <field name="nobeca"/>
+                                    <field name="date"/>
+                                    <field name="student_id"/>
+                                    <field name="autorizo"/>
+                                    <field name="obs"/>
+                                </group>
+                            </page>
+                        </notebook>
+            </form>
+            </field>
+		</record>
+
+		<record id="view_becas_search" model="ir.ui.view">
+			<field name="name">process.becas.search</field>
+			<field name="model">process.becas</field>
+			<field name="priority" eval="8" />
+			<field name="arch" type="xml">
+				<search string="Becas">
+					<field name="date" />
+					<field name="state" />
+					<field name="autorizo" />
+                    <field name="student_id" />
+					<newline />
+            	</search>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="view_becas_graph">
+			<field name="name">process.becas.graph</field>
+			<field name="model">process.becas</field>
+			<field name="arch" type="xml">
+				<graph string="Becas" type="pie">
+					<field name="nobeca" operator="+" />
+				</graph>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="act_open_becas_view">
+			<field name="name">Becas</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">process.becas</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,graph</field>
+			<field name="search_view_id" ref="view_becas_search" />
+			<field name="domain">[]</field>
+			<field name="context">{}</field>
+		</record>
+
+		<record model="ir.actions.act_window.view" id="act_open_becas_view_form">
+			<field name="act_window_id" ref="act_open_becas_view" />
+			<field name="sequence" eval="20" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_becas_form" />
+		</record>
+
+		<record model="ir.actions.act_window.view" id="act_open_becas_view_tree">
+			<field name="act_window_id" ref="act_open_becas_view" />
+			<field name="sequence" eval="10" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_becas_tree" />
+		</record>
+
+        <!--
+        <menuitem id="menu_becas_root" name="Proceso de Becas"
+                    parent="openeducat_erp.menu_op_school_root" sequence="30"/>
+        <menuitem id="menu_becas" name="Becas"
+                    parent="menu_becas_root" sequence="10" action="act_open_becas_view_tree"/>
+
+        -->
+
+
+
+
+	</data>
+</openerp>
